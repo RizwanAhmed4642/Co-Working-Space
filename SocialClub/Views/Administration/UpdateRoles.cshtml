@@ -1,0 +1,60 @@
+﻿@model SocialClub.Models.AspNetRole
+
+@{
+    ViewBag.Title = "updateRoles";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    @using (Html.BeginForm("UpdateRoles", "Administration", FormMethod.Post))
+    {
+        <section id="contact" class="section-bg wow fadeInUp">
+            <div class="container">
+
+                <div class="section-header">
+                    <h3>Add Role</h3>
+                    <div class="separator-breadcrumb border-top"></div>
+                    @if (TempData["response"] != null)
+                    {
+                        <div class="alert-success" id="msgalert">
+                            @TempData["response"].ToString()
+                        </div>
+                    }
+                </div>
+
+                <div class="row contact-info">
+
+                    <div class="form col-md-12">
+                        <div id="sendmessage">Your registration is completed, our team will cpntact you shortly!</div>
+                        <div></div>
+                        <form method="post" role="form" class="contactForm">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttribute = new { @class = "form-control", id = "txtaddrole", placeholder = "Add Role*" } })
+                                    @*<input type="text" name="firstname" class="form-control" id="addrole" placeholder="Add Role*" required data-rule="minlen:3" data-msg="Please enter at least 3 chars" />*@
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger db" })
+                                </div>
+
+                            </div>
+                            <div class="text-center"><button name="btnAddRole" type="submit">Update Role</button></div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <p class="lowerlink-r">
+                @Html.ActionLink("Back To List", "ListRoles")
+            </p>
+        </section>
+    }
+
+
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>

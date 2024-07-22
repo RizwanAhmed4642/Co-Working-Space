@@ -1,0 +1,91 @@
+﻿@model SocialClub.Models.Dashboard
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+<script src="~/AdminPortal/dist-assets/js/plugins/echarts.min.js"></script>
+<script src="~/AdminPortal/dist-assets/js/scripts/echart.options.min.js"></script>
+<section id="contact" class="section-bg wow fadeInUp">
+    <div class="container">
+        <div class="section-header">
+            <h3 class="h3center">Admin Dashboard</h3>
+            <div class="separator-breadcrumb border-top"></div>
+            @if (TempData["response"] != null)
+            {
+                <div class="alert alert-success" id="msgalert">
+                    @TempData["response"].ToString()
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <!-- CARD ICON-->
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card card-icon mb-4">
+                            <div class="card-body text-center">
+                                <i class="i-Shopping-Cart"></i>
+                                <p class="text-muted mt-2 mb-2">Active Products</p>
+                                <p class="text-primary text-24 line-height-1 m-0">@Model.TotalProducts</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card card-icon mb-4">
+                            <div class="card-body text-center">
+                                <i class="i-Add-User"></i>
+                                <p class="text-muted mt-2 mb-2">Active Users</p>
+                                <p class="text-primary text-24 line-height-1 m-0">@Model.TotalUsers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card card-icon mb-4">
+                            <div class="card-body text-center">
+                                <i class="i-Tag"></i>
+                                <p class="text-muted mt-2 mb-2">Active Packages</p>
+                                <p class="text-primary text-24 line-height-1 m-0">@Model.TotalPackages</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card card-icon-big mb-4">
+                            <div class="card-body text-center">
+                                <i class="i-Money-2"></i>
+                                <p class="text-muted mt-2 mb-2">Receivables</p>
+                                <p class="line-height-1 text-title text-18 mt-2 mb-0">45000</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card card-icon-big mb-4">
+                            <div class="card-body text-center">
+                                <i class="i-Receipt-3"></i>
+                                <p class="text-muted mt-2 mb-2">Total Bookings</p>
+                                <p class="line-height-1 text-title text-18 mt-2 mb-0">05</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card card-icon-big mb-4">
+                            <div class="card-body text-center">
+                                <i class="i-Mail"></i>
+                                <p class="text-muted mt-2 mb-2">New Messages</p>
+                                <p class="line-height-1 text-title text-18 mt-2 mb-0">@Model.TotalMessages</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="card mb-4">
+                    <div class="card-body p-0">
+                        <h5 class="card-title m-0 p-3">Bookings</h5>
+                        <div id="echart4" style="height: 300px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

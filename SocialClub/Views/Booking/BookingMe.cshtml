@@ -1,0 +1,250 @@
+﻿@using SocialClub.Models
+@model SocialClub.Models.BookingViewModel
+
+@{
+    ViewBag.Title = "Book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@using (Html.BeginForm("BookingMe", "Booking", FormMethod.Post))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(m => m.ProductID)
+    @Html.HiddenFor(m => m.ProductName)
+    @Html.HiddenFor(m => m.PackageID)
+    @Html.HiddenFor(m => m.GrossAmount)
+    <main id="main" style="padding-right:0px;">
+        <section>
+            <div>
+                <img src="~/img/bg-image1.jpg" style="width: 100%; padding-left: 0px; ">
+            </div>
+            <div class="section-header">
+                <h3>@Model.ProductName</h3>
+                @if (TempData["response"] != null)
+                {
+                    <div class="alert alert-success" id="msgalert">
+                        @TempData["response"].ToString()
+                    </div>
+                }
+            </div>
+
+        </section>
+
+        <section id="contact" class="section-bg wow fadeInUp" style="padding-right:0; ">
+            <div class="row  align-content-center" style="margin-left:20px;  margin-right:0px;">
+                <div class="col-lg-8 col-md-8 col-sm-12" style="width:auto">
+
+                    <h3>
+                        <span id="ContentPlaceHolder1_OnlinePlan1_lblMainHeaderSummary"><b>@ViewBag.ProductName</b></span>
+                        @*<span id="ContentPlaceHolder1_OnlinePlan1_lblSiteHeaderSummary">ABSOL Social Club</span>*@
+                    </h3>
+
+                    <br>
+
+                    <div class="row row--boxed">
+                        <div class="col-md-6 col-sm-6">
+                            <span id="ContentPlaceHolder1_OnlinePlan1_Label2" class="float--right header--options ng-isolate-scope">When do you want your plan to start?</span>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div style="display:inline-block;width:160px;height:32px;">
+                                <div class="form-group">
+                                    <input type="date" id="calendar" name="startdate" style="height:45px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row-->
+                    <div class="align-content-center">
+                        <div class="row row--boxed" style="margin-top: 35px;">
+                            <div class="col-md-6 col-sm-6">
+                                <span class="float--right header--options ng-isolate-scope">Select your payment frequency?</span>
+                            </div>
+                            <div class="col-md-6 col-sm-6 ">
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.Timeline, new { htmlAttributes = new { @class = "form-control", placeholder = "TimeLIne", @Id = "sel2" } })
+                                    @Html.ValidationMessageFor(model => model.Timeline, "", new { @class = "text-danger db" })
+
+                                    @*@Html.DropDownListFor(model => model.Timeline, (IEnumerable<SelectListItem>)(ViewBag.TimeLine), "Select Your Duration", new { @class = "form-control", @Id = "sel2" })*@
+
+
+                                    @*@Html.DropDownListFor(m => m.Timeline, new SelectList(Enum.GetValues(typeof(plans))), "Select You Duration", new { @Id = "sel1", @class = "form-control" })*@
+
+
+                                    @*<select class="form-control" id="sel1" name="">
+                                            <option value="@plans.Monthly">Monthly   </option>
+                                            <option value="@plans.Quarterly">Quarterly </option>
+                                            <option value="@plans.HalfYear">Half Year </option>
+                                            <option value="@plans.Yearly">Yearly</option>
+                                        </select>*@
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Billing Frequency -->
+                        <div id="ContentPlaceHolder1_OnlinePlan1_div2" class="row row--boxed">
+                            <div class="col-md-6 col-sm-6">
+                                <span id="ContentPlaceHolder1_OnlinePlan1_Label3" class="float--right header--options ng-isolate-scope" portal-translate="true">No of Peoples</span>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                    @*@Html.DropDownListFor(m => m.NoOfPeople, new SelectList(Enum.GetValues(typeof(NoOFpeople))), "No Of People", new { @Id = "sel1", @class = "form-control" })*@
+
+                                    <select class="form-control" id="sel2" name="NoOfPeople">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- How many people -->
+                        <div class="clearfix">
+                        </div>
+                        <div id="ContentPlaceHolder1_OnlinePlan1_divMembers">
+                            <div>
+                                <h3 class="headerFont header--section forecolorpurple ng-isolate-scope" portal-translate="true"><b>Members</b></h3>
+                            </div>
+
+                            <div>
+                                <table class="table table-bordered table--striped table-members">
+                                    <thead class="headerColour">
+                                        <tr>
+
+                                            <th class="forecolorpurple ng-isolate-scope" portal-translate="true">Title</th>
+                                            <th class="forecolorpurple ng-isolate-scope" portal-translate="true">First Name</th>
+                                            <th class="forecolorpurple ng-isolate-scope" portal-translate="true">Last Name</th>
+                                            <th class="forecolorpurple ng-isolate-scope" portal-translate="true">Email</th>
+                                            <th class="forecolorpurple ng-isolate-scope" portal-translate="true">Phone</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="dropdown_list ng-isolate-scope" portal-translate="true" style="width:100px;">
+                                                    <div class="form-group">
+                                                        @Html.DropDownListFor(model => model.UserTitle, new SelectList(Enum.GetValues(typeof(UserTittle))), "Select Tittle", new { @Id = "sel1", @class = "form-control" })
+
+                                                    </div>
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group col-md-12">
+                                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name" } })
+                                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group col-md-12">
+                                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
+                                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger db" })
+                                                </div>
+                                            </td>
+                                            <td colspan="1">
+                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
+                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger db" })
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone" } })
+                                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger db" })
+                                            </td>
+                                        </tr>
+
+                                        <tr class="table--members__bottom">
+
+                                            <td colspan="3">
+                                                <div class="dropdown_list ng-isolate-scope" portal-translate="true">
+                                                    <div class="form-group">
+                                                        @*@Html.DropDownListFor(model => model.PackageID, (IEnumerable<SelectListItem>)(ViewBag.Plan), "Select Package", new { @class = "form-control", @Id = "sel2" })*@
+
+                                                        @Html.EditorFor(model => model.PackageName, new { htmlAttributes = new { @class = "form-control", placeholder = "PackageName", @Id = "sel2" } })
+                                                        @Html.ValidationMessageFor(model => model.PackageName, "", new { @class = "text-danger db" })
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td colspan="2">
+                                                <span id="ContentPlaceHolder1_OnlinePlan1_repMembers_lblMemPrice_0" class="price--bold"> @Model.GrossAmount PKR</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- main -->
+                <div class="col-md-4 col-sm-12 " style="border-style:solid;border-color:lightgray;height:280px;">
+
+                    <div class="summary" style="padding-right:0px;">
+                        <h3 class="headerFont forecolorpurple ng-isolate-scope" portal-translate="true"><b>Your Order</b></h3>
+                        <table class="table">
+
+                            <tbody>
+                                <tr>
+                                    <td portal-translate="true" class="ng-isolate-scope">Recurring Quarterly Total</td>
+                                    <td align="right">
+
+                                        @Model.GrossAmount PKR
+
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td portal-translate="true" class="ng-isolate-scope">Tax</td>
+                                    <td align="right">
+
+                                        $0.00
+
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td portal-translate="true" class="ng-isolate-scope"><b>Total</b></td>
+                                    <td align="right">
+                                        <b style="font-size:22px;">
+                                            @Model.GrossAmount PKR
+                                        </b>
+
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-left:170px;">
+                        <input type="submit" value="Checkout" @*class="button-glossy green hidden ng-isolate-scope"*@ class="btn btn-dark" placeholder="">
+                    </div>
+                </div>
+                <!-- summary -->
+            </div>
+
+        </section>
+
+    </main>
+}
+
+
+    <script>
+        document.querySelector("#calendar").valueAsDate = new Date();
+
+
+
+      
+
+
+    </script>
+
+
+
+

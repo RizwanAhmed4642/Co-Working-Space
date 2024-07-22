@@ -1,0 +1,580 @@
+﻿@model SocialClub.Models.PricePlan
+@{
+    ViewBag.Title = "AddPackage";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<link href="~/css/jquery.timepicker.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/js/jquery.timepicker.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".hourstimeline").hide('fast');
+        $(".pricetimeline").hide('fast');
+        $(".frpricetimeline").hide('fast');
+        $("#fprice").hide('fast');
+        $("#sprice").hide('fast');
+        $("#eprice").hide('fast');
+        $("#fhours").hide('fast');
+        $("#shours").hide('fast');
+        $("#ehours").hide('fast');
+        $("#namevalidate").hide('fast');
+        $("#timelinevalidate").hide('fast');
+        $("#hoursvalidate").hide('fast');
+        $("#fhoursvalidate").hide('fast');
+        $("#shoursvalidate").empty().hide('fast');
+        $("#ehoursvalidate").empty().hide('fast');
+        $("#pricevalidate").empty().hide('fast');
+        $("#fpricevalidate").empty().hide('fast');
+        $("#spricevalidate").empty().hide('fast');
+        $("#epricevalidate").empty().hide('fast');
+    });
+    
+    function HourOption() {
+        var ishour = $('#active_hour').prop('checked');
+        if (ishour) {
+            $("#active_hour").prop("checked", true);
+            $("#active_weeks").prop("checked", false);
+            $("#active_months").prop("checked", false);
+            $("#active_days").prop("checked", false);
+            //$("#active_rangeHours").prop("checked", false);
+            //$("#active_fixedHours").prop("checked", true);
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $("#shours").hide('fast');
+            $("#ehours").hide('fast');
+           // $("#fprice").show('fast');
+           // $("#fhours").show('fast');
+            $("#sprice").val('');
+            $("#eprice").val('');
+            $(".hourstimeline").show('fast');
+        } else {
+            $(".hourstimeline").hide('fast');
+            $("#active_fixedHours").prop("checked", false);
+            $("#active_rangeHours").prop("checked", false);
+            $("#fprice").hide('fast');
+            $("#fhours").hide('fast');
+        }
+    };
+    function DayOption() {
+        var isday = $('#active_days').prop('checked');
+        if (isday) {
+            $("#active_weeks").prop("checked", false);
+            $("#active_months").prop("checked", false);
+            $("#active_hour").prop("checked", false);
+            $("#active_days").prop("checked", true);
+            $(".hourstimeline").hide('fast');
+            $("#active_fixedHours").prop("checked", false);
+            $("#active_rangeHours").prop("checked", false);
+            $("#fhours").val('');
+            $("#shours").val('');
+            $("#ehours").val('');
+            $("#shours").hide('fast');
+            $("#ehours").hide('fast');
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $(".hourstimeline").show('fast');
+            $(".pricetimeline").hide('fast');
+        } else {
+            $(".hourstimeline").hide('fast');
+            $("#active_fixedHours").prop("checked", false);
+            $("#active_rangeHours").prop("checked", false);
+        }
+    };
+    function WeekOption() {
+        var isweek = $('#active_weeks').prop('checked');
+        if (isweek) {
+            $("#active_days").prop("checked", false);
+            $("#active_months").prop("checked", false);
+            $("#active_hour").prop("checked", false);
+            $("#active_weeks").prop("checked", true);
+            $(".hourstimeline").hide('fast');
+            $(".pricetimeline").hide('fast');
+            $("#active_fixedHours").prop("checked", false);
+            $("#active_rangeHours").prop("checked", false);
+            $("#fhours").val('');
+            $("#shours").val('');
+            $("#ehours").val('');
+            $("#shours").hide('fast');
+            $("#ehours").hide('fast');
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $(".hourstimeline").show('fast');
+        } else {
+            $(".hourstimeline").hide('fast');
+            $("#active_fixedHours").prop("checked", false);
+            $("#active_rangeHours").prop("checked", false);
+        }
+
+    };
+    function MonthOption() {
+        var ismonth = $('#active_months').prop('checked');
+        if (ismonth) {
+            $("#active_days").prop("checked", false);
+            $("#active_weeks").prop("checked", false);
+            $("#active_hour").prop("checked", false);
+            $("#active_months").prop("checked", true);
+            $(".hourstimeline").hide('fast');
+            $("#active_fixedHours").prop("checked", false);
+            $("#active_rangeHours").prop("checked", false);
+            $("#fhours").val('');
+            $("#shours").val('');
+            $("#ehours").val('');
+            $("#shours").hide('fast');
+            $("#ehours").hide('fast');
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $(".hourstimeline").show('fast');
+            $(".pricetimeline").hide('fast');
+            $(".hourstimeline").show('fast');
+        } else {
+            $(".hourstimeline").hide('fast');
+            $("#active_fixedHours").prop("checked", false);
+            $("#active_rangeHours").prop("checked", false);
+        }
+    };
+    function FHoursOption() {
+        var isfHours = $('#active_fixedHours').prop('checked');
+        if (isfHours) {
+            $("#active_rangeHours").prop("checked", false);
+            $("#active_fixedHours").prop("checked", true);
+            $("#shoursvalidate").empty().hide('fast');
+            $("#ehoursvalidate").empty().hide('fast');
+            $(".pricetimeline").show('fast');
+            $("#fprice").show('fast');
+            $("#fhours").show('fast');
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $("#shours").hide('fast');
+            $("#ehours").hide('fast');
+            $("#sprice").val('');
+            $("#eprice").val('');
+
+        } else {
+            $(".pricetimeline").hide('fast');
+            $("#fprice").hide('fast');
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $("#fhours").hide('fast');
+            $("#shours").hide('fast');
+            $("#ehours").hide('fast');
+            $("#fhours").val('');
+            $("#sprice").val('');
+            $("#eprice").val('');
+            $("#fprice").val('');
+            $("#sprice").val('');
+            $("#eprice").val('');
+        }
+    };
+    function RHoursOption() {
+        var isrHours = $('#active_rangeHours').prop('checked');
+        if (isrHours) {
+            $("#active_rangeHours").prop("checked", true);
+            $("#active_fixedHours").prop("checked", false);
+            $("#fhoursvalidate").empty().hide('fast');
+            $(".pricetimeline").show('fast');
+            $("#fprice").hide('fast');
+            $("#sprice").show('fast');
+            $("#eprice").show('fast');
+            $("#fhours").hide('fast');
+            $("#shours").show('fast');
+            $("#ehours").show('fast');
+            $("#fprice").val('');
+        } else {
+            $(".pricetimeline").hide('fast');
+            $("#fprice").hide('fast');
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $("#fhours").hide('fast');
+            $("#shours").hide('fast');
+            $("#ehours").hide('fast');
+            $("#fprice").val('');
+            $("#sprice").val('');
+            $("#eprice").val('');
+            $("#fhours").val('');
+        }
+    };
+    function FPriceOption() {
+        var isfPrice = $('#active_fixedprice').prop('checked');
+        if (isfPrice) {
+            $("#active_rangeprice").prop("checked", false);
+            $("#active_fixedprice").prop("checked", true);
+            $("#pricevalidate").empty().hide('fast');
+            $("#fprice").show('fast');
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $("#sprice").val('');
+            $("#eprice").val('');
+            $(".frpricetimeline").show('fast');
+
+
+        } else {
+            $("#fprice").hide('fast');
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $("#sprice").val('');
+            $("#eprice").val('');
+            $("#fprice").val('');
+            $("#sprice").val('');
+            $("#eprice").val('');
+        }
+    };
+    function RPriceOption() {
+        var isrPrice = $('#active_rangeprice').prop('checked');
+        if (isrPrice) {
+            $("#active_rangeprice").prop("checked", true);
+            $("#active_fixedprice").prop("checked", false);
+            $("#pricevalidate").empty().hide('fast');
+            $("#fprice").hide('fast');
+            $("#sprice").show('fast');
+            $("#eprice").show('fast');
+            $("#fprice").val('');
+            $(".frpricetimeline").show('fast');
+
+        } else {
+            $("#fprice").hide('fast');
+            $("#sprice").hide('fast');
+            $("#eprice").hide('fast');
+            $("#sprice").val('');
+            $("#eprice").val('');
+            $("#fprice").val('');
+            $("#sprice").val('');
+            $("#eprice").val('');
+        }
+    };
+    function MakePackage() {
+
+        var isvalid = true;
+        var ishour = $('#active_hour').prop('checked');
+        var isday = $('#active_days').prop('checked');
+        var isweek = $('#active_weeks').prop('checked');
+        var ismonth = $('#active_months').prop('checked');
+        var name = $('#txtname').val();
+        var data = {};
+        data = new FormData();
+        if (name == "" || name == "undefined") {
+            isvalid = false;
+            $("#namevalidate").empty().text('Please Enter Package Name');
+            $("#namevalidate").show('fast');
+        } else {
+            $("#namevalidate").empty().hide('fast');
+            if (name.length < 5 || name.length > 10) {
+                isvalid = false;
+                $("#namevalidate").empty().text('Name should be 5 to 10');
+                $("#namevalidate").show('fast');
+            } else {
+                $("#namevalidate").empty().hide('fast');
+                data.append("PlanName", name);
+            }
+        }
+        if (ishour) {
+            data.append("Timeline", "Hour");
+        } else if (isday) {
+            data.append("Timeline", "Day");
+           
+        }
+        else if (isweek) {
+            data.append("Timeline", "Week");
+        }
+        else if (ismonth) {
+            data.append("Timeline", "Month");
+        }
+        if (!ishour && !isday && !isweek && !ismonth) {
+            isvalid = false;
+            $("#timelinevalidate").empty().text('Please check atleast one');
+            $("#timelinevalidate").show('fast');
+
+        }
+        var isfHours = $('#active_fixedHours').prop('checked');
+        var isrHours = $('#active_rangeHours').prop('checked');
+        if (isfHours) {
+            data.append("IsTimeFixed", true);
+            var fhours = $('#fhours').val();
+            if (fhours == "" || fhours == "undefined") {
+                isvalid = false;
+                $("#fhoursvalidate").empty().text('Please Enter Hours');
+                $("#fhoursvalidate").show('fast');
+
+            } else {
+                if (fhours < 1) {
+                    isvalid = false;
+                    $("#fhoursvalidate").empty().text('Fixed Hours Should be 1 or above');
+                    $("#fhoursvalidate").show('fast');
+                } else {
+                    data.append("FixedPrice", fhours);
+                    $("#fhoursvalidate").empty().hide('fast');
+                }
+            }
+        } else if (isrHours) {
+            data.append("IsTimeFixed", false);
+            var shours = $('#shours').val();
+            var ehours = $('#ehours').val();
+            if (shours == "" || shours == "undefined") {
+                isvalid = false;
+                $("#shoursvalidate").empty().text('Please Enter Start Hours');
+                $("#shoursvalidate").show('fast');
+
+            }
+            else {
+                $("#shoursvalidate").empty().hide('fast');
+            }
+            if (ehours == "" || ehours == "undefined") {
+                isvalid = false;
+                $("#ehoursvalidate").empty().text('Please Enter End Hours');
+                $("#ehoursvalidate").show('fast');
+
+            } else {
+                $("#ehoursvalidate").empty().hide('fast');
+
+            }
+            if (shours != "" && ehours != "") {
+                    data.append("TimeRange", shours + "-" + ehours);
+                    $("#shoursvalidate").empty().hide('fast');
+                    $("#ehoursvalidate").empty().hide('fast');
+            }
+            
+        }
+        if (!isfHours && !isrHours) {
+            isvalid = false;
+            $("#hoursvalidate").empty().text('Please check atleast one');
+            $("#hoursvalidate").show('fast');
+
+        } else {
+            $("#hoursvalidate").hide('fast');
+        }
+        var isfPrice = $('#active_fixedprice').prop('checked');
+        var isrPrice = $('#active_rangeprice').prop('checked');
+
+        if (isfPrice) {
+            data.append("IsPriceFixed", true);
+            var fprice = $('#fprice').val();
+            if (fprice == "" || fprice == "undefined") {
+                isvalid = false;
+                $("#fpricevalidate").empty().text('Please Enter Fixed Price');
+                $("#fpricevalidate").show('fast');
+
+            } else {
+                if (fprice < 1) {
+                    isvalid = false;
+                    $("#fpricevalidate").empty().text('Fixed Price Should be valid');
+                    $("#fpricevalidate").show('fast');
+                } else {
+                    data.append("FixedPrice", fprice);
+                    $("#fpricevalidate").empty().hide('fast');
+                }
+            }
+        }
+        else if (isrPrice) {
+            data.append("IsPriceFixed", false);
+            var sprice = $('#sprice').val();
+            if (sprice == "" || sprice == "undefined") {
+                isvalid = false;
+                $("#spricevalidate").empty().text('Please Enter Start Price');
+                $("#spricevalidate").show('fast');
+
+            } else {
+                $("#spricevalidate").empty().hide('fast');
+            }
+            var eprice = $('#eprice').val();
+            if (eprice == "" || eprice == "undefined") {
+                isvalid = false;
+                $("#epricevalidate").empty().text('Please Enter Start Price');
+                $("#epricevalidate").show('fast');
+
+            } else {
+                $("#epricevalidate").empty().hide('fast');
+            }
+
+            if (sprice != "" && eprice != "") {
+                if (sprice < 1 || eprice < 1) {
+                    isvalid = false;
+                    $("#spricevalidate").empty().text('Price Range Should be Valid');
+                    $("#spricevalidate").show('fast');
+                } else {
+                    data.append("PriceRange", sprice + "-" + eprice);
+                    $("#spricevalidate").empty().hide('fast');
+                    $("#epricevalidate").empty().hide('fast');
+                }
+            }
+        }
+        if (!isfPrice && !isrPrice) {
+            isvalid = false;
+            $("#pricevalidate").empty().text('Please check atleast one');
+            $("#pricevalidate").show('fast');
+
+        } else {
+            $("#pricevalidate").hide('fast');
+
+        }
+        var baseUrl = window.location.href;
+        var koopId = baseUrl.substring(baseUrl.lastIndexOf('/') + 1);
+        data.append("ProductID", koopId);
+        if (isvalid) {
+            $.ajax({
+                type: "POST",
+                url: "/ProductManagement/AddPackage",
+                data: data,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (msg) {
+                    if (msg != "false") {
+                        $("#mesgs").empty().append('<div class="alert alert-success" id="msgalert">Package Added Successfully</div>');
+                    } else {
+                        $("#mesgs").empty().append('<div class="alert alert-success" id="msgalert">Package Added Failed</div>');
+                    }
+                },
+                error: function (error) {
+                    $("#mesgs").empty().append('<div class="alert alert-success" id="msgalert">Package Added Failed</div>');
+                },
+            });
+        }
+        setTimeout(function () {
+            $("#mesgs").empty();
+            $("#namevalidate").empty().hide('fast');
+            $("#timelinevalidate").empty().hide('fast');
+            $("#hoursvalidate").empty().hide('fast');
+            $("#fhoursvalidate").empty().hide('fast');
+            $("#shoursvalidate").empty().hide('fast');
+            $("#ehoursvalidate").empty().hide('fast');
+            $("#pricevalidate").empty().hide('fast');
+            $("#fpricevalidate").empty().hide('fast');
+            $("#spricevalidate").empty().hide('fast');
+            $("#epricevalidate").empty().hide('fast');
+            
+        }, 4500);
+    };
+</script>
+@*@using (Html.BeginForm("AddPackage", "ProductManagement", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{*@
+    <section id="contact" class="section-bg wow fadeInUp">
+        <div class="container">
+
+            <div class="section-header">
+                <h3 class="h3center">Add New Package Plan</h3>
+                @if (TempData["response"] != null)
+                {
+                    <div class="alert alert-success" id="msgalert">
+                        @TempData["response"].ToString()
+                    </div>
+                }
+                <div id="mesgs"></div>
+            </div>
+            <div class="row contact-info">
+                <div class="form col-md-12">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input id="txtname" class="form-control form-control-rounded" placeholder="PackageName*" />
+                            <label id="namevalidate" class="text-danger db"></label>
+                        </div>
+                        <label class="db col-lg-12 screen-innerheading">Days Timeline</label>
+                        <div class="col-sm-4">
+                            @Html.CheckBox("Status", false, new { @onclick = "HourOption()", id = "active_hour" })
+                            <label class="" for="inlineFormCheck">For an Hour<i class="input-frame"></i></label>
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.CheckBox("Status", false, new { @onclick = "DayOption()", id = "active_days" })
+                            <label class="" for="inlineFormCheck">For a Day<i class="input-frame"></i></label>
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.CheckBox("Status", false, new { @onclick = "WeekOption()", id = "active_weeks" })
+                            <label class="" for="inlineFormCheck">For a Week<i class="input-frame"></i></label>
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.CheckBox("Status", false, new { @onclick = "MonthOption()", id = "active_months" })
+                            <label class="" for="inlineFormCheck">For a Month<i class="input-frame"></i></label>
+                        </div>
+                        <label id="timelinevalidate" class="text-danger db"></label>
+                    </div>
+                    <hr />
+                    <div class="form-row hourstimeline">
+                        <label class="db col-lg-12 screen-innerheading">Hours Timeline</label>
+                        <div class="col-sm-4">
+                            @Html.CheckBox("Status", false, new { @onclick = "FHoursOption()", id = "active_fixedHours" })
+                            <label class="" for="inlineFormCheck">Fixed Hours<i class="input-frame"></i></label>
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.CheckBox("Status", false, new { @onclick = "RHoursOption()", id = "active_rangeHours" })
+                            <label class="" for="inlineFormCheck">Hours Range<i class="input-frame"></i></label>
+                        </div>
+                        <label id="hoursvalidate" class="text-danger db"></label>
+                    </div>
+                    <div class="form-row hourstimeline">
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <input class="form-control form-control-rounded" placeholder="FixedHours*" type="number" id="fhours" />
+                                <label id="fhoursvalidate" class="text-danger db"></label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <input class="form-control form-control-rounded" placeholder="StartHours*" id="shours" />
+                                <label id="shoursvalidate" class="text-danger db"></label>
+                            </div>
+                            <div class="form-group col-md-8">
+                                <input class="form-control form-control-rounded" placeholder="EndHours*" id="ehours" />
+                                <label id="ehoursvalidate" class="text-danger db"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="hourstimeline" />
+                    <div class="form-row pricetimeline">
+                        <label class="db col-lg-12 screen-innerheading">Price Plan</label>
+                        <div class="col-sm-4">
+                            @Html.CheckBox("Status", false, new { @onclick = "FPriceOption()", id = "active_fixedprice" })
+                            <label class="" for="inlineFormCheck">Fixed Price<i class="input-frame"></i></label>
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.CheckBox("Status", false, new { @onclick = "RPriceOption()", id = "active_rangeprice" })
+                            <label class="" for="inlineFormCheck">Hours Price<i class="input-frame"></i></label>
+                        </div>
+                        <label id="pricevalidate" class="text-danger db"></label>
+                    </div>
+                    <div class="form-row frpricetimeline">
+                        <label class="db col-lg-12 screen-innerheading">Price</label>
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <input class="form-control form-control-rounded" placeholder="FixedPrice*" type="number" id="fprice" />
+                                <label id="fpricevalidate" class="text-danger db"></label>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <input class="form-control form-control-rounded" placeholder="StartPrice*" type="number" id="sprice" />
+                                <label id="spricevalidate" class="text-danger db"></label>
+                            </div>
+                            <div class="form-group col-md-8">
+                                <input class="form-control form-control-rounded" placeholder="EndPrice*" type="number" id="eprice" />
+                                <label id="epricevalidate" class="text-danger db"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="pricetimeline" />
+                    <div class="text-center"><button class="btn btn-danger" name="btnRegister" onclick="MakePackage()">Add Product</button></div>
+                </div>
+            </div>
+        </div>
+        <p class="lowerlink-r">
+            @Html.ActionLink("Back To List", "ChooseProduct")
+        </p>
+    </section>
+@*}*@
+<script>
+    $("#shours").timepicker({
+        defaultTime: '11',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+    });
+    $("#ehours").timepicker({
+        defaultTime: '11',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true
+    });
+  
+</script>

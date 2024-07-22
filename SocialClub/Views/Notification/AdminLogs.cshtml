@@ -1,0 +1,85 @@
+﻿@model IEnumerable<SocialClub.Models.Activity_Log>
+@{
+    ViewBag.Title = "AdminLogs";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+
+
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#activitylogs').DataTable({
+                //"dom": '<"toolbar">frtip'
+            });
+            //$("div.toolbar").html('<b>Admin ACtivities</b>');
+        });
+
+
+
+
+    </script>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12 stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+
+
+                    <div class="forms-sample">
+                        <div class="container">
+
+                            <br />
+                            <table id="activitylogs" class="table">
+                                <thead>
+                                    <tr>
+
+                                        <th>SER NO</th>
+                                        <th>CREATED BY</th>
+                                        <th>DATE</th>
+                                        <th>OPERATION NAME</th>
+                                        <th>ACTION DETAIL </th>
+
+
+
+
+
+                                    </tr>
+                                </thead>
+                                @{int i = 1;}
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>@i</td>
+
+
+
+                                            <td>@item.created_by</td>
+                                            <td>@item.Cdate</td>
+                                            <td>@item.operation_name</td>
+                                            <td>@item.new_details</td>
+
+
+
+
+                                        </tr>
+                                        i++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<SocialClub.Models.AspNetUser>
+
+@{
+    ViewBag.Title = "ListUsers";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#listrole').DataTable();
+    });
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+</script>
+
+    <section id="contact" class="section-bg wow fadeInUp">
+        <div class="container">
+            <div class="section-header">
+                <h3 class="h3center">All Existing Users</h3>
+                <div class="separator-breadcrumb border-top"></div>
+                @if (TempData["response"] != null)
+                {
+                    <div class="alert alert-success" id="msgalert">
+                        @TempData["response"].ToString()
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-12 stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="forms-sample">
+                                <div class="container">
+                                    <table id="listrole" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>SER NO</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Email</th>
+                                                <th>Type</th>
+                                                <th>Mobile</th>
+                                                <th>Cnic</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        @{int i = 1;}
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@item.firstname</td>
+                                                <td>@item.lastname</td>
+                                                <td>@item.Email</td>
+                                                <td>@item.RoleName</td>
+                                                <td>@item.mobile</td>
+                                                <td>@item.cnic</td>
+                                                <td>
+                                                    <a> <i class="fa fa-info-circle cp" onclick="location.href='@Url.Action("UserDetails", "Administration", new { id = item.Id })'"></i></a>
+                                                    <a> <i class="fa fa-trash cp" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteUser", "Administration", new { id = item.Id })': null"></i></a>
+                                                </td>
+                                            </tr>
+                                                i++;
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <p class="lowerlink-r">
+            @Html.ActionLink("Add New User", "RegisterUser")
+        </p>
+    </section>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+

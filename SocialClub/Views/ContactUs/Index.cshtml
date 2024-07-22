@@ -1,0 +1,107 @@
+﻿@model SocialClub.Models.ContactDetail
+@{
+    ViewBag.Title = "Contact Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@using (Html.BeginForm("Index", "ContactUS", FormMethod.Post))
+{
+
+    <main id="main">
+        <section>
+            <div>
+                <img src="~/img/bg-image1.jpeg" style="width: 100%; padding-left: 0px;opacity:0.5 ">
+            </div>
+        </section>
+        <section id="contact" class="section-bg wow fadeInUp">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Contact Us</h3>
+                    <p>For Pricing & Plans Please Contact Us</p>
+                    @if (TempData["response"] != null)
+                    {
+                        <div class="alert alert-success" id="msgalert">
+                            @TempData["response"].ToString()
+                        </div>
+                    }
+                </div>
+                <div class="row contact-info">
+                    <div class="col-md-9">
+                        <div class="form">
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control ", placeholder = "Full Name*" } })
+                                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger db" })
+                                    </div>
+                                        <div class="form-group col-md-6">
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control ", placeholder = "Email*" } })
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger db" })
+                                        </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control ", placeholder = "Mobile*" } })
+                                        @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger db" })
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control ", placeholder = "Subject*" } })
+                                        @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger db" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextAreaFor(model => model.Message, new { @class = "form-control ", placeholder = "Message*" } )
+                                    @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger db" })
+                                </div>
+                                <div class="text-center"><button name="btnSend" type="submit">Send Message</button></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="contact-address">
+                            <i class="ion-ios-location-outline"></i>
+                            <h3>Address</h3>
+                            <address>908,9TH FLOOR,HALLY TOWER PHASE 2, DHA Lahore, Pakistan</address>
+                            <p>&nbsp;</p>
+                        </div>
+
+                        <div class="contact-phone">
+                            <i class="ion-ios-telephone-outline"></i>
+                            <h3>Phone & Email</h3>
+                            <p>+92 3228844013</p>
+
+                            <p><a href="mailto:salespk@ab-sol.net">salespk@ab-sol.net</a></p>
+
+
+                        </div>
+                        <br>
+                        <div class="contact-email">
+                            <i class="ion-ios-clock-outline"></i>
+                            <h3>Business Hours</h3>
+                            <address>24 Hours Building Access </address>
+                            <p>&nbsp;</p>
+                            <h3>Office Hours</h3>
+                            <address>Monday to Sunday<br>24/7</address>
+                            <p>&nbsp;</p>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+            </div>
+        </section>
+    </main>
+}<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>

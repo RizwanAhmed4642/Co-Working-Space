@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "GetProductImages";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#listrole').DataTable();
+    });
+</script>
+
+<section id="contact" class="section-bg wow fadeInUp">
+    <div class="container">
+        <div class="section-header">
+            <h4>Select Product For Image Gallery</h4>
+            <div class="separator-breadcrumb border-top"></div>
+            @if (TempData["response"] != null)
+            {
+                <div class="alert alert-success" id="msgalert">
+                    @TempData["response"].ToString()
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="forms-sample">
+                            <div class="container ov-x">
+                                <table id="listrole" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>SER NO</th>
+                                            <th>Product Name</th>
+                                            <th>Status</th>
+                                            <th>Image Gallery</th>
+                                        </tr>
+                                    </thead>
+                                    @{int i = 1;}
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@item.ProductName</td>
+                                                <td>
+                                                    @if (item.Status == true)
+                                                    {
+                                                        @Html.DisplayName("Active")//  @Html.CheckBox("is_active", true, new { @disabled = "disabled" })
+
+                                                    }
+                                                    else
+                                                    {
+
+                                                        @Html.DisplayName("InActive")
+                                                        //@Html.CheckBox("is_active", false, new { @disabled = "disabled" })
+
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <a><i class="fa fa-image cp" onclick="location.href='@Url.Action("ImageGallery", "ProductManagement", new { id = item.ProductID })'"></i></a>
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <p class="lowerlink-r">
+        @Html.ActionLink("Add New Product", "Product")
+    </p>
+</section>
+
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+
+

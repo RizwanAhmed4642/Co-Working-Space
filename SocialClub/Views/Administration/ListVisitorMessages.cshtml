@@ -1,0 +1,133 @@
+﻿@model IEnumerable<SocialClub.Models.ContactDetail>
+@{
+    ViewBag.Title = "Visitor Messages";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#listrole').DataTable();
+    });
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    };
+
+</script>
+
+<section id="contact" class="section-bg wow fadeInUp">
+    <div class="container">
+        <div class="section-header">
+            <h3 class="h3center">All Visitor Messages</h3>
+            <div class="separator-breadcrumb border-top"></div>
+            @if (TempData["response"] != null)
+            {
+                <div class="alert alert-success" id="msgalert">
+                    @TempData["response"].ToString()
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item"><a class="nav-link active show" id="home-basic-tab" data-toggle="tab" href="#homeBasic" role="tab" aria-controls="homeBasic" aria-selected="true">Un Read</a></li>
+                            <li class="nav-item"><a class="nav-link" id="profile-basic-tab" data-toggle="tab" href="#profileBasic" role="tab" aria-controls="profileBasic" aria-selected="false">Read</a></li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade active show" id="homeBasic" role="tabpanel" aria-labelledby="home-basic-tab">
+                                <div class="forms-sample" style="margin-top:3%">
+                                    <div class="container ov-x">
+                                        <table id="listrole" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>SER NO</th>
+                                                    <th>Full Name</th>
+                                                    <th>Email</th>
+                                                    <th>Mobile</th>
+                                                    <th>Subject</th>
+                                                    <th>Date</th>
+                                                    <th>Message</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            @{int i = 1;}
+                                            <tbody>
+                                                @foreach (var item in Model.ToList().Where(x=>x.ReadStatus == false))
+                                                {
+                                                    <tr>
+                                                        <td>@i</td>
+                                                        <td>@item.FullName</td>
+                                                        <td>@item.Email</td>
+                                                        <td>@item.Mobile</td>
+                                                        <td>@item.Subject</td>
+                                                        <td>@item.CreatedDate</td>
+                                                        <td>@item.Message</td>
+                                                        <td>
+                                                            <a> <i class="fa fa-archive cp" onclick="location.href='@Url.Action("ReadVisitorMessage", "Administration", new { id = item.ContactID })'" title="Mark Read"></i></a>
+                                                            <a> <i class="fa fa-trash cp" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteVisitorMessage", "Administration", new { id = item.ContactID })': null" title="Delete"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="profileBasic" role="tabpanel" aria-labelledby="profile-basic-tab">
+                                <div class="forms-sample" style="margin-top:3%">
+                                    <div class="container">
+                                        <table id="listrole" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>SER NO</th>
+                                                    <th>Full Name</th>
+                                                    <th>Email</th>
+                                                    <th>Mobile</th>
+                                                    <th>Subject</th>
+                                                    <th>Date</th>
+                                                    <th>Message</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            @{int ii = 1;}
+                                            <tbody>
+                                                @foreach (var item in Model.ToList().Where(x => x.ReadStatus == true))
+                                                {
+                                                    <tr>
+                                                        <td>@ii</td>
+                                                        <td>@item.FullName</td>
+                                                        <td>@item.Email</td>
+                                                        <td>@item.Mobile</td>
+                                                        <td>@item.Subject</td>
+                                                        <td>@item.CreatedDate</td>
+                                                        <td>@item.Message</td>
+                                                        <td>
+                                                            <a> <i class="fa fa-trash cp" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteVisitorMessage", "Administration", new { id = item.ContactID })': null" title="Delete"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                    ii++;
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+
+

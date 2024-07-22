@@ -1,0 +1,192 @@
+﻿@model IEnumerable<SocialClub.Models.Product>
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#listrole').DataTable();
+    });
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+</script>
+
+<section id="contact" class="section-bg wow fadeInUp">
+    <div class="container">
+        <div class="section-header">
+            <h3>All Existing Users</h3>
+            <div class="separator-breadcrumb border-top"></div>
+            @if (TempData["response"] != null)
+            {
+                <div class="alert alert-success" id="msgalert">
+                    @TempData["response"].ToString()
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="forms-sample">
+                            <div class="container ov-x">
+                                <table id="listrole" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>SER NO</th>
+                                            <th>Product Name</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    @{int i = 1;}
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@item.ProductName</td>
+                                                <td>
+                                                    @if (item.Status == true)
+                                                    {
+                                                        @Html.DisplayName("Active")//  @Html.CheckBox("is_active", true, new { @disabled = "disabled" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayName("InActive")
+                                                        //@Html.CheckBox("is_active", false, new { @disabled = "disabled" })
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    <a title="AddPackage" href="@Url.Action("AddPackage", "ProductManagement", new { id = item.ProductID })">Add Package</a>
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <p class="lowerlink-r">
+        @Html.ActionLink("Add New Product", "Product")
+    </p>
+</section>
+
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+
+    function getimages(id) {
+
+        $.ajax({
+            type: "GET",
+            url: "/ProductManagement/GetImages",
+            data: {
+                id: id
+            },
+            async: false,
+            dataType: 'json',
+            enctype: 'multipart/form-data',
+            cache: false,
+            success: function (msg) {
+                console.log(msg);
+                if (msg.length > 0) {
+                    $("#noimage").empty();
+                    $("#imagebox").show();
+                    $.each(msg, function (ind, it) {
+                        if (ind == 0) {
+                            $("#imagegallary1").attr('src', 'data:image/png;base64,' + it.ImagePath);
+
+                        }
+                        if (ind == 1) {
+                            $("#imagegallary2").attr('src', 'data:image/png;base64,' + it.ImagePath);
+                            $("#imagegallary2").show();
+                        }
+                        if (ind == 2) {
+                            $("#imagegallary3").attr('src', 'data:image/png;base64,' + it.ImagePath);
+                            $("#imagegallary3").show();
+                        }
+                    });
+                } else {
+                    $("#imagebox").hide('fast');
+                    $("#noimage").empty().append('<div class="alert alert-success" id="msgalert">No Image Uploaded</div>');
+                }
+                $("#ImageGalleryModal").modal("show");
+
+            }, error: function (error) {
+                setTimeout(function () {
+                }, 2000);
+            },
+        });
+        event.stopImmediatePropagation();
+    };
+</script>
+<div class="modal fade" id="ImageGalleryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog genericModel" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Product Images</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <section class="timeline3 cid-st7Nf6SjDM" id="timeline3-p">
+                    <div class="container">
+                        <div class="timelines-container">
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-16">
+                                <div id="imagebox">
+                                    <div class="col-md-6 col-lg-4 di">
+                                        <div class="event-item">
+                                            <div class="event-item__img">
+                                                <img class="img--bg" alt="img" id="imagegallary1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4 di">
+                                        <div class="event-item">
+                                            <div class="event-item__img">
+                                                <img class="img--bg" alt="img" id="imagegallary2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-4 di">
+                                        <div class="event-item">
+                                            <div class="event-item__img">
+                                                <img class="img--bg" alt="img" id="imagegallary3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="noimage"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*<td>
+        <img src="data:image;base64,@System.Convert.ToBase64String(item.Image)" style="width:30px;height:30px" />
+    </td>*@

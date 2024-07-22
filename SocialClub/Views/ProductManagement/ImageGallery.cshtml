@@ -1,0 +1,323 @@
+﻿@model IEnumerable<SocialClub.Models.ProductImage>
+
+@{
+    ViewBag.Title = "ImageGallery";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#imagesvalidator").hide('fast');
+    });
+    function DropImage(event) {
+        var flag = 0;
+        if (flag == 0) {
+            flag = 1;
+        } else {
+            flag = flag + 1;
+        }
+        $('#ImageUPL').change(function (event) {
+        
+            var val = $(this).val().toLowerCase(),
+                regex = new RegExp("(.*?)\.(jpeg|jpg)$");
+            if (val != "") {
+                if (!(regex.test(val))) {
+                    $("#imagesvalidator").text("Only jpg and jpeg format are allowed !");
+                    $("#imagesvalidator").show();
+                    setTimeout(function () {
+                        $("#imagesvalidator").hide();
+                    }, 2000);
+                } else {
+                    var id = $("#currentmissionid").html();
+                   
+                    $.ajax({
+                        type: "GET",
+                        url: "/ProductManagement/ImagesCounterByProduct",
+                        data: {
+                            id: id
+                        },
+                        async: false,
+                        dataType: 'json',
+                        enctype: 'multipart/form-data',
+                        cache: false,
+                        success: function (msg) {
+                            flag = msg + 1;
+                            if (flag <= 3) {
+                                for (var i = 1; i <= flag; i++) {
+                                    //http://localhost:53030/
+                                    //http://absulte-social.com
+                                    if (document.getElementById('imagegallary' + i).src == 'http://localhost:61925/img/galleryupload.png') {
+                                        document.getElementById('imagegallary' + i).src = URL.createObjectURL(event.target.files[0]);
+                                        $("#ImageUPL").attr('disabled', true);
+                                        flag = i;
+                                        break;
+                                    }
+                                }
+                                var missionid = $("#missionid").html();
+                                var txtimagegalleryid1 = $('#txtmissionimage' + flag).html();
+                                var titleimage = null;
+                                if (document.getElementById('ImageUPL') !== null) {
+                                    var totalFiles = document.getElementById('ImageUPL').files.length;
+                                    for (var i = 0; i < totalFiles; i++)
+                                        titleimage = document.getElementById('ImageUPL').files[i];
+                                }
+                                var Gallerydata = {};
+                                Gallerydata = new FormData();
+                                if (txtimagegalleryid1 == "undefined") {
+                                    Gallerydata.append("ProductImageID", "0");
+                                } else {
+                                    Gallerydata.append("ProductImageID", txtimagegalleryid1);
+                                }
+                                if (titleimage != null) {
+                                    Gallerydata.append("titleimg", titleimage);
+                                }
+                                Gallerydata.append("ProductID", id);
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/ProductManagement/UpdateImageGallery",
+                                    data: Gallerydata,
+                                    dataType: "json",
+                                    processData: false,
+                                    contentType: false,
+                                    success: function (msg) {
+                                        var labelhtml = '<label class="missionimage-delete" title="delete image" id="Labelimagegallary' + msg.m_image_id + '" onclick = "RemoveImage(' + "'" + msg.m_image_id + "' + " + "'/' +" + "'imagegallary'" + "+" + flag + ')" > Delete</label > ';
+                                        $("#labelimagecontainer" + flag).append(labelhtml);
+                                        $("#ImageUPL").attr('disabled', false);
+                                       
+                                    },
+                                    error: function (error) {
+                                    },
+                                });
+                            }
+                            else {
+                                $("#imagesvalidator").text("You Cannot Add More Than 3 Images !");
+                                $("#imagesvalidator").show();
+                                setTimeout(function () {
+                                    $("#imagesvalidator").hide();
+                                }, 3000);
+                            }
+
+                        },
+                        error: function (error) {
+                            $("#imagesvalidator").text("Something Wrong Or Server Not Respond");
+                            $("#imagesvalidator").show();
+                            setTimeout(function () {
+                                $("#imagesvalidator").hide();
+                            }, 2000);
+                        },
+                    });
+                    event.stopImmediatePropagation();
+                }
+            }
+            else {
+                $("#imagesvalidator").text("Please Drop The Image On Drop Box");
+                $("#imagesvalidator").show();
+                setTimeout(function () {
+                    $("#imagesvalidator").hide();
+                }, 2000);
+            }
+        });
+    };
+    function RemoveImage(id) {
+
+        var data = id.split("/");
+        var outerid = data[1].split("y");
+        $.ajax({
+            type: "GET",
+            url: "/ProductManagement/DeleteImage",
+            data: {
+                id: data[0]
+            },
+            async: false,
+            dataType: 'json',
+            cache: false,
+            success: function (msg) {
+                console.log(msg);
+                if (msg != 'false') {
+                    document.getElementById(data[1]).src = 'http://localhost:61925/img/galleryupload.png';
+                    $("#Label" + data[0]).remove();
+                    $("#Labelimagegallary" + data[0]).remove();
+                    $("#mesgs").empty().append('<div class="alert alert-success" id="msgalert">Deleted Image Successfully</div>');
+                } else {
+                    $("#mesgs").empty().append('<div class="alert alert-success" id="msgalert">Unable To Delete Image</div>');
+
+                }
+            },
+            error: function (error) {
+            },
+        });
+    }
+</script>
+<section id="contact" class="section-bg wow fadeInUp">
+    <div class="container">
+        <div class="section-header">
+            <h4>Product Image Gallery</h4>
+            <div class="separator-breadcrumb border-top"></div>
+            @if (TempData["response"] != null)
+            {
+                <div class="alert alert-success" id="msgalert">
+                    @TempData["response"].ToString()
+                </div>
+            }
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+               
+                        @if (Model.Count() > 0)
+                        {
+
+                            <span id="currentmissionid" class="hidden">@Model.ElementAt(0).ProductID</span>
+                            var allImages = Model.Count();
+                            var counter = 3;
+                            <section>
+                                <div class="container">
+                                    <div class="form-row">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10">
+                                            <div id="mesgs"></div>
+                                            @{ int flag = 0;
+                                                foreach (var imagegallery in Model)
+                                                {
+                                                    flag = flag + 1;
+                                                    if (flag <= 3)
+                                                    {
+                                                        <div class="hidden" id="txtmissionimage @imagegallery.ProductImageID">@imagegallery.ProductImageID</div>
+                                                        <div class="col-md-6 col-lg-3 di">
+                                                            <div class="event-item">
+                                                                <div class="event-item__img">
+                                                                    @if (imagegallery.Image != null)
+                                                                    {
+                                                                        <img class="img--bg" src="data:image;base64,@System.Convert.ToBase64String(@imagegallery.Image)" id="@("imagegallary" + flag)" />
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <label class="missionimage-delete" title="delete image" id="@("Label" + imagegallery.ProductImageID)" rel="@("imagegallary" + flag)" onclick="RemoveImage('@imagegallery.ProductImageID' + '/' + 'imagegallary'+@flag)">Delete</label>
+                                                            <div id="@("labelimagecontainer" + flag)"></div>
+                                                        </div>
+                                                    }
+                                                }
+                                                counter = counter - allImages;
+                                                for (int i = 0; i < counter; i++)
+                                                {
+                                                    ++allImages;
+                                                    <div class="col-md-6 col-lg-3 di">
+                                                        <div class="event-item">
+                                                            <div class="event-item__img">
+                                                                <img class="img--bg" src="~/img/galleryupload.png" alt="img" id="@("imagegallary" + allImages)">
+                                                            </div>
+                                                        </div>
+                                                        <div id="@("labelimagecontainer" + allImages)"></div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                        <label class="text-danger field-validation-error" id="imagesvalidator" style="padding-left:2%"></label>
+                                        <div class="file-upload-wrapper image-droper">
+                                            <div class="card card-body view file-upload dragdrop uploadfile">
+                                                <p class="droplabel" for="ImageUPL">Drop files here to upload</p>
+                                                <div class="card-text file-upload-message dropzonestyle">
+                                                    <div class="mask rgba-stylish-slight"></div>
+                                                    <input type="file" id="ImageUPL" class="file_uploadfile_upload uploadfile file-upload drop-photo" ondrop="DropImage(event)" style="margin-top:-18%;height:142px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        }
+                        else
+                        {
+                            <span id="currentmissionid" class="hidden"></span>
+                            <script>
+                                var baseUrl = window.location.href;
+                                var koopId = baseUrl.substring(baseUrl.lastIndexOf('/') + 1);
+                                console.log(koopId);
+                                $("#currentmissionid").html(koopId);
+                            </script>
+                            <section>
+                                <div class="container">
+                                    <div class="form-row">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10">
+                                            <div class="col-md-6 col-lg-3 di">
+                                                <div class="event-item">
+                                                    <div class="event-item__img">
+                                                        <img class="img--bg" src="~/img/galleryupload.png" alt="img" id="imagegallary1">
+                                                    </div>
+                                                </div>
+                                                <div id="labelimagecontainer1"></div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-3 di">
+                                                <div class="event-item">
+                                                    <div class="event-item__img">
+                                                        <img class="img--bg" src="~/img/galleryupload.png" alt="img" id="imagegallary2">
+                                                    </div>
+                                                </div>
+                                                <div id="labelimagecontainer2"></div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-3 di">
+                                                <div class="event-item">
+                                                    <div class="event-item__img">
+                                                        <img class="img--bg" src="~/img/galleryupload.png" alt="img" id="imagegallary3">
+                                                    </div>
+                                                </div>
+                                                <div id="labelimagecontainer3"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1"></div>
+                                        <label class="text-danger field-validation-error" id="imagesvalidator" style="padding-left:2%"></label>
+                                        <div class="file-upload-wrapper image-droper">
+                                            <div class="card card-body view file-upload dragdrop uploadfile">
+                                                <p class="droplabel" for="ImageUPL">Drop files here to upload</p>
+                                                <div class="card-text file-upload-message dropzonestyle">
+                                                    <div class="mask rgba-stylish-slight"></div>
+                                                    <input type="file" id="ImageUPL" class="file_uploadfile_upload uploadfile file-upload drop-photo" ondrop="DropImage(event)" style="margin-top:-18%;height:142px;">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        }
+                    </div>
+                    </div>
+                    </div>
+</section>
+<script>
+    setTimeout(function () {
+      $("#mesgs").empty();
+    }, 3500);
+</script>
+@*<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImagePath)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImagePath)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProductImageID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ProductImageID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProductImageID })
+            </td>
+        </tr>
+    }
+
+</table>*@

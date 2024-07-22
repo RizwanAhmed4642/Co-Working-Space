@@ -1,0 +1,202 @@
+﻿@model SocialClub.Models.AspNetUser
+
+@{
+    ViewBag.Title = "UserDetails";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+ 
+    <section id="contact" class="section-bg wow fadeInUp">
+        <div class="container">
+            <div class="section-header">
+                <h3>User Account Detail</h3>
+                @if (TempData["response"] != null)
+                {
+                    <div class="alert alert-success" id="msgalert">
+                        @TempData["response"].ToString()
+                    </div>
+                }
+            </div>
+            <div class="form col-md-12">
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("First Name")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.firstname)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("Last Name")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.lastname)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("Cnic #")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.cnic)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("User Name")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.UserName)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("User Type")
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.RoleName)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("Mobile #")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.mobile)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("From Sate")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.state)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("From City")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.city)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("Address")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.address)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("Last Login Date")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.last_login)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("Registration Date")
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.created_date.Value.Date)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="form-row col-lg-4 di">
+                    <div class="form-group col-md-6">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayName("Account Status")
+                            </dt>
+                            <dd>
+                                @if (Model.is_active == true)
+                                {
+                                    @Html.DisplayName("Active")
+                                }
+                                else
+                                {
+                                    @Html.DisplayName("Blocked")
+                                }
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                    <p>
+                        @Html.ActionLink("Back to List", "ListUsers")
+                    </p>
+                </div>
+                </div>
+
+
+</section>

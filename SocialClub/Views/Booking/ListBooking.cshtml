@@ -1,0 +1,255 @@
+﻿@model IEnumerable<SocialClub.Models.Booking>
+@{
+    ViewBag.Title = "Visitor Messages";
+    Layout = "~/Views/Shared/_Admin_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#listrole').DataTable();
+    });
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    };
+    function ConfirmApproved() {
+        return confirm('Are you sure you want to Approved?');
+    };
+    function ConfirmRejected() {
+        return confirm('Are you sure you want to Rejected?');
+    };
+  
+
+
+</script>
+
+<section id="contact" class="section-bg wow fadeInUp">
+    <div class="container">
+        <div class="section-header">
+            <h3 class="h3center">All Bookings</h3>
+            <div class="separator-breadcrumb border-top"></div>
+            @if (TempData["response"] != null)
+            {
+                <div class="alert alert-success" id="msgalert">
+                    @TempData["response"].ToString()
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12 stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item"><a class="nav-link active show" id="home-basic-tab" data-toggle="tab" href="#homeBasic" role="tab" aria-controls="homeBasic" aria-selected="true">Pending</a></li>
+                            <li class="nav-item"><a class="nav-link" id="profile-basic-tab" data-toggle="tab" href="#profileBasic" role="tab" aria-controls="profileBasic" aria-selected="false">Approved</a></li>
+                            <li class="nav-item"><a class="nav-link" id="rejected-basic-tab" data-toggle="tab" href="#rejectedbasic" role="tab" aria-controls="profileBasic" aria-selected="false">Rejected</a></li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade active show" id="homeBasic" role="tabpanel" aria-labelledby="home-basic-tab">
+                                <div class="forms-sample" style="margin-top:3%">
+                                    <div class="container ov-x">
+                                        <table id="listrole" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>SER NO</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Product Name</th>
+                                                    <th>Package Name</th>
+                                                    <th>Booking Date</th>
+                                                    <th>Duration Date</th>
+                                                    <th>TimeLine</th>
+                                                    <th>No Of People</th>
+
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            @{int i = 1;}
+                                            <tbody>
+                                                @foreach (var item in Model.Where(x => x.Status == null).ToList())
+                                                {
+                                                    <tr>
+                                                        <td>@i</td>
+                                                        <td>@item.UserTitle  @item.FirstName  @item.LastName</td>
+                                                        <td>@item.Email</td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.ProductName</td>
+                                                        <td>@item.PackageName</td>
+
+                                                        <td>@Html.FormatValue("dd/MM/yyyy", item.BookingDate?.ToString("dd/MM/yyyy"))</td>
+                                                        <td>
+                                                            @if (item.PackageDuration != null) { 
+                                                        @Html.FormatValue("dd/MM/yyyy", item.PackageDuration?.ToString("dd/MM/yyyy"))
+                                                            }
+                                                            else
+                                                            {
+                                                                item.PackageDuration =null;
+                                                            }
+                                                        </td>
+
+                                                        <td>@item.Timeline</td>
+                                                        <td>@item.NoOfPeople</td>
+                                                        <td>
+                                                            <a class="cp" onclick="ConfirmApproved()? location.href='@Url.Action("ApprovedBooking", "Booking"  ,new { id = item.Id })' :null" title="Approve">Approve</a> |
+                                                            <a class="cp" onclick="ConfirmRejected()? location.href='@Url.Action("RejectedBooking", "Booking", new { id = item.Id })':null" title="Reject">Reject</a>
+
+                                                            @*<a><i class="fa fa-trash cp" title="Delete" onclick="ConfirmDelete()? location.href='@Url.Action("DeletePackage", "ProductManagement", new { id = item.PlanID })': null"></i></a>*@
+                                                        </td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="profileBasic" role="tabpanel" aria-labelledby="profile-basic-tab">
+                                <div class="forms-sample" style="margin-top:3%">
+                                    <div class="container">
+                                        <table id="listrole" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>SER NO</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone Number</th>
+
+                                                    <th>Product Name</th>
+                                                    <th>Package Name</th>
+                                                    <th>Booking Date</th>
+                                                    <th>Duration Date</th>
+                                                    <th>TimeLine</th>
+                                                    <th>No Of People</th>
+
+                                                </tr>
+                                            </thead>
+                                            @{int a = 1;}
+                                            <tbody>
+                                                @foreach (var item in Model.Where(x => x.Status == true).ToList())
+                                                {
+                                                    <tr>
+                                                        <td>@a</td>
+                                                        <td>@item.UserTitle  @item.FirstName  @item.LastName</td>
+                                                        <td>@item.Email</td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.ProductName</td>
+                                                        <td>@item.PackageName</td>
+
+                                                        <td>@Html.FormatValue("dd/MM/yyyy", item.BookingDate?.ToString("dd/MM/yyyy"))</td>
+                                                        <td>
+                                                            @if (item.PackageDuration != null)
+                                                            {
+                                                                @Html.FormatValue("dd/MM/yyyy", item.PackageDuration?.ToString("dd/MM/yyyy"))
+                                                            }
+                                                            else
+                                                            {
+                                                                item.PackageDuration = null;
+                                                            }
+                                                        </td>
+
+                                                        <td>@item.Timeline</td>
+                                                        <td>@item.NoOfPeople</td>
+
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="rejectedbasic" role="tabpanel" aria-labelledby="rejected-basic-tab">
+                                <div class="forms-sample" style="margin-top:3%">
+                                    <div class="container">
+                                        <table id="listrole" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>SER NO</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone Number</th>
+
+                                                    <th>Product Name</th>
+                                                    <th>Package Name</th>
+                                                    <th>Booking Date</th>
+                                                    <th>Duration Date</th>
+                                                    <th>TimeLine</th>
+                                                    <th>No Of People</th>
+
+                                                   
+                                                </tr>
+                                            </thead>
+                                            @{int b = 1;}
+                                            <tbody>
+                                                @foreach (var item in Model.Where(x => x.Status == false).ToList())
+                                                {
+                                                    <tr>
+                                                        <td>@b</td>
+                                                        <td>@item.UserTitle  @item.FirstName  @item.LastName</td>
+                                                        <td>@item.Email</td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.ProductName</td>
+                                                        <td>@item.PackageName</td>
+
+                                                        <td>@Html.FormatValue("dd/MM/yyyy", item.BookingDate?.ToString("dd/MM/yyyy"))</td>
+                                                        <td>
+                                                            @if (item.PackageDuration != null)
+                                                            {
+                                                                @Html.FormatValue("dd/MM/yyyy", item.PackageDuration?.ToString("dd/MM/yyyy"))
+                                                            }
+                                                            else
+                                                            {
+                                                                item.PackageDuration = null;
+                                                            }
+                                                        </td>
+
+                                                        <td>@item.Timeline</td>
+                                                        <td>@item.NoOfPeople</td>
+
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

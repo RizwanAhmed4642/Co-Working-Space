@@ -1,0 +1,214 @@
+﻿@model SocialClub.Models.Product
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/internal.css" rel="stylesheet" />
+<main id="main">
+    <section>
+        <div>
+            <img src="~/img/bg-image1.jpeg" style="width: 100%; padding-left: 0px;opacity:0.5">
+        </div>
+    </section>
+    <section id="contact" class="section-bg wow fadeInUp" style="background-color:#ffff">
+        <div class="">
+            <div class="section-header">
+                <h3>@Model.ProductName</h3>
+                @if (TempData["response"] != null)
+                {
+                    <div class="alert alert-success" id="msgalert">
+                        @TempData["response"].ToString()
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-12 stretch-card">
+                    <div class="">
+                        <div class="card-body">
+                            <div class="elementor-section-wrap">
+                                <section class="timeline3 cid-st7Nf6SjDM" id="timeline3-p">
+                                    <div class="container">
+
+                                        <div class="timelines-container">
+                                            <div class="row timeline-element first-separline mb-5">
+                                                <span class="iconBackground"></span>
+                                                <div class="col-12 col-md-6 mt-4">
+                                                    @if (Model.ProductImages.Count() > 0)
+                                                    {
+                                                        foreach (var item in Model.ProductImages)
+                                                        {
+                                                            <img class="preview-img" src="data: image; base64,@System.Convert.ToBase64String(item.Image)" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="preview-img" src="~/img/office/Shared space.jpeg" />
+                                                        <img class="preview-img" src="~/img/office/largededicated.jpeg" />
+                                                        <img class="preview-img" src="~/img/office/shared.jpeg" />
+                                                    }
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <strong>@Model.ProductName</strong>
+                                                    <div class="timeline-text-wrapper">
+                                                        <p class="mbr-text mbr-fonts-style mt-3 mb-0 display-7" style="font-size:20px">
+                                                            @Model.Description
+                                                        </p>
+                                                    </div>
+                                                    <hr />
+                                                    <div style="padding:14px;">
+
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            @if (Model.PricePlans.Count() > 0)
+                            {
+                                <div class="elementor-row">
+                                    <div class="elementor-element elementor-element-e5b91c1 elementor-column elementor-col-100 elementor-top-column" data-id="e5b91c1" data-element_type="column">
+                                        <div class="elementor-column-wrap  elementor-element-populated">
+                                            <div class="elementor-widget-wrap">
+                                                <div class="elementor-element elementor-element-0271d07 elementor-widget elementor-widget-text-editor" data-id="0271d07" data-element_type="widget" data-widget_type="text-editor.default">
+                                                    <div class="elementor-widget-container">
+                                                        <div class="section-header header-aligning-left">
+                                                            <h2>Packages and Services</h2>
+                                                            <div class="separator-breadcrumb border-top sperator-width-section-h"></div>
+                                                        </div>
+                                                        <div class="elementor-text-editor elementor-clearfix header-aligning-left">
+                                                            <h5 class="di">@Model.ProductName </h5><small class="di" style="font-weight:400"> (Product)</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <section class="elementor-element elementor-element-04fc4dc elementor-section-boxed elementor-section-height-default elementor-section-height-default elementor-section elementor-inner-section" data-id="04fc4dc" data-element_type="section">
+                                                    <div class="elementor-container elementor-column-gap-default">
+
+
+                                                        @foreach (var item in Model.PricePlans)
+                                                        {
+                                                        <div style="display:none">
+                                                            @item.PlanID
+                                                        </div>
+                                                            <div class="elementor-row">
+
+                                                                <div class="elementor-element elementor-element-4715968 elementor-column elementor-col-33 elementor-inner-column" data-id="4715968" data-element_type="column">
+                                                                    <div class="elementor-column-wrap  elementor-element-populated">
+                                                                        <div class="elementor-widget-wrap">
+
+                                                                            <div class="elementor-element elementor-element-63a1db8 elementor-widget elementor-widget-tommusrhodus-pricing-table-block " data-id="63a1db8" data-element_type="widget" data-widget_type="tommusrhodus-pricing-table-block.default">
+
+                                                                                <div class="elementor-widget-container">
+                                                                                    <div data-aos="fade-up" data-aos-delay="NaN" class="aos-init aos-animate">
+                                                                                        <div class="card card-body align-items-center shadow-3d pricecards ">
+
+                                                                                            <span class="badge badge-top badge-dark"></span>
+
+                                                                                            <div class="pt-md-2">
+                                                                                                <h4 class="text-weight">@item.PlanName</h4>
+                                                                                            </div>
+                                                                                           
+                                                                                            <div class="d-flex align-items-start pb-md-2">
+                                                                                                <span class="h5">PKR</span>
+                                                                                                @if (item.IsPriceFixed == true)
+                                                                                                {
+                                                                                                    <span class="fnt-card text-weight">@item.FixedPrice</span>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <span class="fnt-rcard text-weight">@item.PriceRange</span>
+                                                                                                }
+
+                                                                                            </div>
+
+                                                                                            <span class="text-small text-muted">per @item.Timeline</span>
+                                                                                            @if (item.IsTimeFixed == true)
+                                                                                            {
+                                                                                                <span class="text-small text-muted">@(item.FixedTime + " Hours/day")</span>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <span class="text-small text-muted">@(item.TimeRange + "/day")</span>
+                                                                                            }
+                                                                                            @if (item.IsPriceFixed == true)
+                                                                                            {
+                                                                                                <ul class="text-center list-unstyled my-2 my-md-4">
+
+                                                                                                    <li class="py-1">Skyline View of the City</li>
+                                                                                                    <li class="py-1"> Monday to Sunday</li>
+                                                                                                    <li class="py-1"> Velet Parkingy</li>
+                                                                                                    <li class="py-1"> Best Location</li>
+                                                                                                    <li class="py-1"> 24/7Security</li>
+                                                                                                    <li class="py-1"> Pantry Boy Services</li>
+                                                                                                    <li class="py-1"> CCTV Cameras</li>
+                                                                                                    <li class="py-1">High speed internet</li>
+                                                                                                    <li class="py-1">Unlimited tea/coffee</li>
+                                                                                                </ul>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <ul class="text-center list-unstyled my-2 my-md-4">
+
+                                                                                                    <li class="py-1">Skyline View of the City</li>
+                                                                                                    <li class="py-1"> Monday to Sunday</li>
+                                                                                                    <li class="py-1"> Velet Parkingy</li>
+                                                                                                    <li class="py-1"> Best Location</li>
+                                                                                                    <li class="py-1"> 24/7Security</li>
+                                                                                                    <li class="py-1"> Pantry Boy Services</li>
+                                                                                                    <li class="py-1"> CCTV Cameras</li>
+                                                                                                    <li class="py-1">High speed internet</li>
+                                                                                                    <li class="py-1">Unlimited tea/coffee</li>
+                                                                                                </ul>
+                                                                                            }
+
+                                                                                            <a  class="btn btn-outline-primary" href='@Url.Action("BookingMe", "Booking", new { id = Model.ProductID, timeline = Model.PricePlans.ElementAt(0).Timeline, grossamount = Convert.ToBoolean(Model.PricePlans.ElementAt(0).IsPriceFixed) ? Model.PricePlans.ElementAt(0).FixedPrice : Model.PricePlans.ElementAt(0).PriceRange,PlanName=Model.PricePlans.ElementAt(0).PlanName,PlanId=Model.PricePlans.ElementAt(0).PlanID})'>Book Now</a>
+                                                                                           </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="elementor-row">
+                                    <div class="elementor-element elementor-element-e5b91c1 elementor-column elementor-col-100 elementor-top-column" data-id="e5b91c1" data-element_type="column">
+                                        <div class="elementor-column-wrap  elementor-element-populated">
+                                            <div class="elementor-widget-wrap">
+                                                <div class="elementor-element elementor-element-0271d07 elementor-widget elementor-widget-text-editor" data-id="0271d07" data-element_type="widget" data-widget_type="text-editor.default">
+                                                    <div class="elementor-widget-container">
+                                                        <div class="elementor-text-editor elementor-clearfix"><h2>Packages and Services</h2><h3>Coworking Space</h3></div>
+                                                    </div>
+                                                </div>
+                                                <section class="elementor-element elementor-element-04fc4dc elementor-section-boxed elementor-section-height-default elementor-section-height-default elementor-section elementor-inner-section" data-id="04fc4dc" data-element_type="section">
+                                                    <div class="elementor-container elementor-column-gap-default">
+                                                        <div class="elementor-row">
+                                                            <div class="alert alert-success" id="msgalert">No Package & Service Exist</div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
